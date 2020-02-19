@@ -10,3 +10,16 @@ knitr::opts_chunk$set(echo = TRUE)
 dat <- readxl::read_xls('GSS.xls')
 ```
 
+1) How does the happines of a respondent relate to the marriage status?
+
+
+2)Does the sex of the respondent affect the relationship you found in Q1?
+
+
+3) How does the happiness of a respondent relate to the political party affiliation?
+
+
+4)
+5)
+6)
+7)
