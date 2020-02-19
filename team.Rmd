@@ -1,6 +1,6 @@
 ---
-title: "Team"
-author: "McKenna Goffinet, mgoffinet"
+title: "Lab #3"
+author: "McKenna Goffinet (mgoffinet) & Anyesha Ray (anyeshar)"
 date: "2/19/2020"
 output: html_document
 ---
@@ -10,16 +10,44 @@ knitr::opts_chunk$set(echo = TRUE)
 dat <- readxl::read_xls('GSS.xls')
 ```
 
-1) How does the happines of a respondent relate to the marriage status?
+*include a visual, paragraph describing findings, and variables used in each answer
 
+1) How does the happiness of a respondent relate to the marriage status?
+```{r}
 
-2)Does the sex of the respondent affect the relationship you found in Q1?
+```
 
+2) Does the sex of the respondent affect the relationship you found in Q1?
+```{r}
+
+```
 
 3) How does the happiness of a respondent relate to the political party affiliation?
+```{r}
 
+```
 
-4)
-5)
-6)
-7)
+4) Does income affect general happiness? 
+```{r}
+
+```
+
+5) Does race affect general happiness?
+```{r}
+
+```
+
+6) Is there a relationship between income and political party?
+```{r}
+
+```
+
+7) Are people in 2018 happier than in 1972?
+```{r}
+
+```
+
+8) Are young unmarried people happier than older unmarried people?
+```{r}
+
+```
