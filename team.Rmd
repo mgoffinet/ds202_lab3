@@ -8,46 +8,96 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 dat <- readxl::read_xls('GSS.xls')
+library(ggplot2)
+library(dplyr)
 ```
 
 *include a visual, paragraph describing findings, and variables used in each answer
 
-1) How does the happiness of a respondent relate to the marriage status?
+**1) How does the happiness of a respondent relate to the marriage status?**
+```{r}
+sex <- factor(dat$`Respondents sex`)
+happy <- factor(dat$`General happiness`)
+happy <- factor(happy, levels(happy)[c(6:1)])
+marital <- factor(dat$`Marital status`)
+marital <- factor(marital, levels(marital)[c(2,3,6,1,5,4)])
+df <- data.frame(happy, marital, sex)
+df <- df[marital != 'No answer' & (happy == 'Not too happy' | happy == 'Pretty happy' | happy == 'Very happy'), ]
+df <- na.omit(df)
+ggplot(df, aes(fill=happy, y=1,x=marital)) + geom_bar(position="fill", stat="identity") + labs(y='Percentage (%)', x='Marital Status', title='Marital Status vs General Happiness', fill='General Happiness')
+```
+
+There is evidence to support a relationship between marital status and general happiness. Married respondents had the greatest proportion of 'Very happy' responses and the lowest proportion of 'Not too happy' responses, indicating married respondents have the greatest general happiness. Separated respondents had the lowest proportion of 'Very happy' responses and the greatest proportion of 'Not too happy' responses, indicating that they have the least general happiness.
+Approximately 90% of married respondents reported they were either 'Very happy' or 'Pretty happy', followed by 85% of never married respondents, 80% of widowed and divorced respondents, and 70% of separated respondents. 
+Companionship could be a possible cause of the greater happiness of married respondents while separated respondents may be in the process of a divorce. Their unhappiness could be due to an ongoing divorce or fresh wounds from an ending relationship.
+
+The variables 'Marital status' (with 'No answer' removed) and 'General happiness' (with 'Don't know', 'No answer', and 'Not applicable' removed) were used to answer this question.
+
+**2) Does the sex of the respondent affect the relationship you found in Q1?**
+```{r, fig.width=15}
+df$ms <- interaction(df$marital, df$sex)
+df$ms <- factor(df$ms, levels(df$ms)[c(1,7,2,8,3,9,4,10,5,11,6,12)])
+ggplot(df, aes(fill=happy, y=1,x=ms)) + geom_bar(position="fill", stat="identity") + labs(y='Percentage (%)', x='Marital Status', title='Marital Status vs General Happiness', fill='General Happiness')
+```
+
+For every marital status, male respondents have slightly lower proportions of 'Very happy' responses and slightly higher proportions of 'Not too happy' responses. While the differences in proportion between female and male respondents of each marital status are small, it may indicate that the male respondents are slightly less happy than the female respondents. This could be due to societal pressure to be strong, succeed, and provide.
+
+The variables 'Marital status', 'General happiness', and 'Respondents sex' were used to answer this question.
+
+**3) How does the happiness of a respondent relate to the political party affiliation?**
 ```{r}
 
 ```
 
-2) Does the sex of the respondent affect the relationship you found in Q1?
+
+
+**4) Is there a relationship betweent respondents income and general happiness?** 
 ```{r}
 
 ```
 
-3) How does the happiness of a respondent relate to the political party affiliation?
+
+
+**5) Is there a relationsip between race and general happiness?**
+```{r}
+race <- factor(dat$`Race of respondent`)
+happy <- factor(dat$`General happiness`)
+happy <- factor(happy, levels(happy)[c(6:1)])
+df1 <- data.frame(race, happy)
+df1 <- df1[happy == 'Very happy' | happy == 'Pretty happy' | happy == 'Not too happy',]
+df1 <- na.omit(df1)
+ggplot(df1, aes(fill=happy, y=1,x=race)) + geom_bar(position="fill", stat="identity") + labs(y='Percentage (%)', x='Race', title='Race vs General Happiness', fill='General Happiness')
+```
+
+There is evidence of a relationship between race and general happiness of respondents. The above bar chart indicates that white respondents report the most happiness (approximately 35% very happy, 53% pretty happy, 12% not too happy). It also shows that black respondents report the least happiness (approximately 22% very happy, 58% pretty happy, 20% not too happy). In the middle are respondents of other races (approxiamtely 30% pretty happy, 55% pretty happy, 15% not too happy).
+
+The variables 'Respondents race' and 'General happiness' were used to answer this question.
+
+**6) Are people in 2018 happier than in 1972?**
 ```{r}
 
 ```
 
-4) Does income affect general happiness? 
-```{r}
 
+
+**7) Is there a relationship between age and general happiness of never married respondents?**
+```{r}
+a <- strtoi(dat$`Age of respondent`)
+a1<- case_when(a < 35 ~ 'Young', between(a,35,52)~'Young-Mid', between(a, 53,70)~'Mid-Old', a >= 71 ~ 'Old')
+a2 <- factor(a1)
+a2 <- factor(a2, levels(a2)[c(3,4,1,2)])
+h <- factor(dat$`General happiness`)
+h <- factor(h, levels(h)[c(6:1)])
+m <- factor(dat$`Marital status`)
+df2 <- data.frame(a2, h, m)
+df2 <- df2[m == 'Never married' & (h=='Very happy' | h=='Pretty happy' | h=='Not too happy'),]
+df2 <- na.omit(df2)
+ggplot(df2, aes(fill=h, y=1,x=a2)) + geom_bar(position="fill", stat="identity") + labs(y='Percentage (%)', x='Age Group', title='Age vs General Happiness of Never Married Respondents', fill='General Happiness')
 ```
 
-5) Does race affect general happiness?
-```{r}
+The Young-Mid age range (35-52) has the lowest proportion of very happy responses and the greatest proportion of not to happy responses.
+The Old age range (71 and up) has the highest proportion of very happy responses and is roughly tied for the lowest proportion of not too happy responses. Though the differences in proportions of responses are seem small, this may indicate that for people who've never married, older people are the most happy and people in the Young-Mid age range are the least happy.
 
-```
+People in the Young-Mid age range could still have an intention to get married and may fear that they're running out of time, which could contribute to their overall unhappiness. Conversely, older people don't have those worries, and if they have intentions to get married, it's for companionship and not starting a family.
 
-6) Is there a relationship between income and political party?
-```{r}
-
-```
-
-7) Are people in 2018 happier than in 1972?
-```{r}
-
-```
-
-8) Are young unmarried people happier than older unmarried people?
-```{r}
-
-```
+The variables 'Age of Respondent', 'General happiness', and 'Marital status' were used to answer this question.
