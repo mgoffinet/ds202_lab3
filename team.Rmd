@@ -46,16 +46,35 @@ The variables 'Marital status', 'General happiness', and 'Respondents sex' were 
 
 **3) How does the happiness of a respondent relate to the political party affiliation?**
 ```{r}
-
+pp <- factor(dat$`Political party affiliation`, levels = c( "Don't know", "Ind,near dem", "Ind,near rep", "Independent", "Not str democrat", 
+                                                           "Not str republican", "Strong democrat", "Strong republican" , "Other party"))
+happy <- factor(dat$`General happiness`)
+happy <- factor(happy, levels(happy)[c(6:1)])
+df1 <- data.frame(pp, happy)
+df1 <- df1[happy == 'Very happy' | happy == 'Pretty happy' | happy == 'Not too happy',]
+df1 <- na.omit(df1)
+ggplot(df1, aes(fill=happy, y=1,x=pp)) + geom_bar(position="fill", stat="identity") + labs(y='Percentage (%)', x='Political Affiliation', title='Political Affiliation vs General Happiness', fill='General Happiness') + theme(axis.text.x = element_text(angle = 90, hjust = 1))
 ```
 
+Based on the graph, it seems people who didn't know their political affiliations had the highest percent of very happy responses. However, people who didn't know their political affiliation had the highest percent of not too happy responses at about 25%. When simply comparing happiness to not happy,  strong republicans, not str republicans, and ind near rep had the lowest percent of not too happy responses which means a higher percent was pretty happy or very happy. While we cannot make claims based on a graph alone, it seems that people who have republican views may be happier than people who don't.
 
 
-**4) Is there a relationship betweent respondents income and general happiness?** 
+**4) Is there a relationship betweent respondents wealth and general happiness?** 
 ```{r}
-
+wealth <- factor(dat$`Total wealth of respondent`, levels = c("Less than $5,000", "$5,000 to $20,000","$20,000 to $40,000","$40,000 to $75,000",
+                                                               "$75,000 to $100,000","$100,000 to $150,000","$150,000 to $250,000","$250,000 to $500,000",
+                                                               "$500,000 to $1 million", "$1 million to $2 million", "$2 million to $3 million",
+                                                               "$3 million to $4 million", "$4 million to $5 million", "$5 million to $10 million", 
+                                                               "Above $10 million"))
+happy <- factor(dat$`General happiness`)
+happy <- factor(happy, levels(happy)[c(6:1)])
+df1 <- data.frame(wealth, happy)
+df1 <- df1[happy == 'Very happy' | happy == 'Pretty happy' | happy == 'Not too happy',]
+df1 <- na.omit(df1)
+ggplot(df1, aes(fill=happy, y=1,x=wealth)) + geom_bar(position="fill", stat="identity") + labs(y='Percentage (%)', x='Total Wealth', title='Total Wealth vs General Happiness', fill='General Happiness') + theme(axis.text.x = element_text(angle = 90, hjust = 1))
 ```
 
+Based on this graph, people with less than $5000 were generally happy but not very happy. From there, the percent of very happy increases steadily until 4 to 10 million where it decreases (however at that point no one responded that they were not too happy). It seems as if happiness increases up to 1 million and then decreases again until 4 to 10 million. 
 
 
 **5) Is there a relationsip between race and general happiness?**
@@ -73,11 +92,18 @@ There is evidence of a relationship between race and general happiness of respon
 
 The variables 'Respondents race' and 'General happiness' were used to answer this question.
 
-**6) Are people in 2018 happier than in 1972?**
+**6) How did happiness levels change from 1972 to 2018?**
 ```{r}
-
+year <- factor(dat$`Gss year for this respondent`)
+happy <- factor(dat$`General happiness`)
+happy <- factor(happy, levels(happy)[c(6:1)])
+df1 <- data.frame(year, happy)
+df1 <- df1[happy == 'Very happy' | happy == 'Pretty happy' | happy == 'Not too happy',]
+df1 <- na.omit(df1)
+ggplot(df1, aes(fill=happy, y=1,x=year)) + geom_bar(position="fill", stat="identity") + labs(y='Percentage (%)', x='Race', title='Race vs General Happiness', fill='General Happiness') + theme(axis.text.x = element_text(angle = 90, hjust = 1))
 ```
 
+Happiness levels seem fairly stable throughtout the years. In 1972, 2008 and 2016 more people responded that they were not too happy but it was not a huge spike. 
 
 
 **7) Is there a relationship between age and general happiness of never married respondents?**
